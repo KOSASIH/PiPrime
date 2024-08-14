@@ -1,0 +1,67 @@
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.ktor.application.Application
+import io.ktor.http.ContentType
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.response.respond
+import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.put
+import io.ktor.routing.delete
+import io.ktor.routing.routing
+
+data class User(val id: String, val name: String, val email: String)
+
+fun Application.api() {
+    val users = listOf(
+        User("1", "John Doe", "john@example.com"),
+        User("2", "Jane Doe", "jane@example.com")
+    )
+
+    routing {
+        get("/users") {
+            val mapper = ObjectMapper()
+            val json = mapper.writeValueAsString(users)
+            respond(ContentType.Application.Json, json)
+        }
+
+        post("/users") {
+            val user = ObjectMapper().readValue(request.body(), User::class.java)
+            users.add(user)
+            respond(ContentType.Application.Json, ObjectMapper().writeValueAsString(user))
+        }
+
+        get("/users/{id}") {
+            val id = call.parameters["id"]
+            val user = users.find { it.id == id }
+            if (user != null) {
+                respond(ContentType.Application.Json, ObjectMapper().writeValueAsString(user))
+            } else {
+                respond(HttpStatusCode.NotFound, "User not found")
+            }
+        }
+
+        put("/users/{id}") {
+            val id = call.parameters["id"]
+            val user = ObjectMapper().readValue(request.body(), User::class.java)
+            val index = users.indexOfFirst { it.id == id }
+            if (index != -1) {
+                users[index] = user
+                respond(ContentType.Application.Json, ObjectMapper().writeValueAsString(user))
+            } else {
+                respond(HttpStatusCode.NotFound, "User not found")
+            }
+        }
+
+        delete("/users/{id}") {
+            val id = call.parameters["id"]
+            val index = users.indexOfFirst { it.id == id }
+            if (index != -1) {
+                users.removeAt(index)
+                respond(HttpStatusCode.OK, "User deleted")
+            } else {
+                respond(HttpStatusCode.NotFound, "User not found")
+            }
+        }
+    }
+}
