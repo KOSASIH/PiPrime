@@ -1,0 +1,15 @@
+{
+  "name": "pi_prime",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node api.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
+}
