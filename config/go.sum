@@ -1,0 +1,4 @@
+github.com/gorilla/mux v1.8.0 h1:iQiX5aDTON5Pft/lpCM9W+bqosWrKmwf+QhRHixgQ4=
+github.com/gorilla/mux v1.8.0/go.mod h1:1lud6UzozanjlhGJRQHjxTy6YLXiUuTaqjPXpjvPWg=
+github.com/lib/pq v1.10.2 h1:Aquty7SRVyv/ySHdjPiIgagaRQVfLqXmTQ5U5iNQsQ=
+github.com/lib/pq v1.10.2/go.mod h1:nPrScQTwGlx +hRNiqxD4K0mn7ieR96Jgd7yAaQsQU=
