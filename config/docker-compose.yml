@@ -1,0 +1,21 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    environment:
+      - DATABASE_URL=postgres://pi_prime:pi_prime_password@database:5432/pi_prime_db
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=pi_prime
+      - POSTGRES_PASSWORD=pi_prime_password
+      - POSTGRES_DB=pi_prime_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
