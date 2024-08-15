@@ -1,0 +1,45 @@
+import javafx.application.Application
+import javafx.scene.Scene
+import javafx.scene.control.Button
+import javafx.scene.layout.VBox
+import javafx.stage.Stage
+
+class GUI : Application() {
+  override fun start(stage: Stage) {
+    val window = Stage()
+    window.title = "GUI"
+    window.width = 350.0
+    window.height = 70.0
+
+    val initButton = Button("Init")
+    initButton.setOnAction {
+      // initialization code here
+    }
+
+    val runButton = Button("Run")
+    runButton.setOnAction {
+      // running code here
+    }
+
+    val stopButton = Button("Stop")
+    stopButton.setOnAction {
+      // stopping code here
+    }
+
+    val statusButton = Button("Status")
+    statusButton.setOnAction {
+      // status code here
+    }
+
+    val container = VBox()
+    container.children.addAll(initButton, runButton, stopButton, statusButton)
+
+    val scene = Scene(container)
+    window.scene = scene
+    window.show()
+  }
+}
+
+fun main(args: Array<String>) {
+  Application.launch(GUI::class.java, *args)
+}
