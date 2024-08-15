@@ -16,4 +16,34 @@ fn main() {
                 "/prime?num=" => is_prime(request.split("=").last().unwrap()).to_string(),
                 _ => "Error: Invalid request".to_string(),
             };
-            stream.write
+            stream.write(response.as_bytes()).unwrap();
+            stream.flush().unwrap();
+        });
+    }
+}
+
+fn calculate_pi(n: u32) -> f64 {
+    let mut pi = 0.0;
+    for k in 0..n {
+        pi += 1.0 / (16.0_f64.powi(k as i32)) * (
+            4.0 / (8 * k + 1) -
+            2.0 / (8 * k + 4) -
+            1.0 / (8 * k + 5) -
+            1.0 / (8 * k + 6)
+        );
+    }
+    pi
+}
+
+fn is_prime(num: &str) -> bool {
+    let n = num.parse::<u32>().unwrap();
+    if n < 2 {
+        return false;
+    }
+    for i in 2..=(n as f64).sqrt() as u32 {
+        if n % i == 0 {
+            return false;
+        }
+    }
+    true
+            }
