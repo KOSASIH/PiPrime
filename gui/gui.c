@@ -41,4 +41,9 @@ int main(int argc, char* argv[]) {
   GtkWidget* statusButton = gtk_button_new_with_label("Status");
   gtk_button_set_label(GTK_BUTTON(statusButton), "Status");
   gtk_container_add(GTK_CONTAINER(window), statusButton);
-  gtk_signal_connect(GTK_OBJECT(statusButton), "clicked", GTK_SIGNAL_FUNC(statusCmd),
+  gtk_signal_connect(GTK_OBJECT(statusButton), "clicked", GTK_SIGNAL_FUNC(statusCmd), NULL);
+
+  gtk_widget_show_all(window);
+  gtk_main();
+  return 0;
+}
