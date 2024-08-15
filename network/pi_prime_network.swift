@@ -25,4 +25,12 @@ class PiPrimeNetwork {
 
     private func isPrime(_ n: Int) -> Bool {
         if n < 2 { return false }
-        for i in 2...Int(sqrt(Double
+        for i in 2...Int(sqrt(Double(n))) {
+            if n % i == 0 { return false }
+        }
+        return true
+    }
+}
+
+let network = PiPrimeNetwork(port: 8080)
+network.listen()
