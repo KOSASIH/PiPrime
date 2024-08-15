@@ -1,0 +1,59 @@
+import java.net.InetSocketAddress
+import com.sun.net.httpserver.HttpServer
+import com.sun.net.httpserver.HttpExchange
+import com.sun.net.httpserver.HttpHandler
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import kotlin.coroutines.experimental.buildSequence
+import kotlin.coroutines.experimental.sequence
+
+fun main() {
+    val port = 8080
+    val server = HttpServer.create(InetSocketAddress(port), 0)
+    server.executor = Executors.newCachedThreadPool()
+    server.createContext("/pi", PiHandler())
+    server.createContext("/prime", PrimeHandler())
+    server.start()
+    println("Serving at port $port")
+}
+
+class PiHandler : HttpHandler {
+    override fun handle(exchange: HttpExchange) {
+        val pi = calculatePi(1000000)
+        exchange.sendResponseHeaders(200, pi.toString().length.toLong())
+        val os = exchange.responseBody
+        os.write(pi.toString().toByteArray())
+        os.close()
+    }
+}
+
+class PrimeHandler : HttpHandler {
+    override fun handle(exchange: HttpExchange) {
+        val num = exchange.requestQueryParameters["num"]
+        val isPrime = isPrime(num)
+        exchange.sendResponseHeaders(200, isPrime.toString().length.toLong())
+        val os = exchange.responseBody
+        os.write(isPrime.toString().toByteArray())
+        os.close()
+    }
+}
+
+fun calculatePi(n: Int): Double {
+    return buildSequence {
+        for (k in 0 until n) {
+            yield(1 / (16.0.pow(k)) * (
+                4 / (8 * k + 1) -
+                2 / (8 * k + 4) -
+                1 / (8 * k + 5) -
+                1 / (8 * k + 6))
+            )
+        }
+    }.sum()
+}
+
+fun isPrime(num: String?): Boolean {
+    if (num == null) return false
+    val n = num.toInt()
+    if (n < 2) return false
+    return (2..Math.sqrt(n.toDouble()).toInt()).none { n % it == 0 }
+}
