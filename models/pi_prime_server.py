@@ -11,4 +11,18 @@ class PiPrimeServer:
 
     def listen(self):
         self.socket.bind((self.host, self.port))
+        self.socket.listen(5)
+
+    def accept(self):
+        conn, addr = self.socket.accept()
+        return conn
+
+    def handle_request(self, conn):
+        inputs = conn.recv(1024)
+        inputs = np.frombuffer(inputs, dtype=np.float32)
+        outputs = self.model.predict(inputs)
+        conn.sendall(outputs.tobytes())
+
+    def close(self):
+        self.socket.close()
        
